@@ -26,7 +26,7 @@ export function Block({handleBlockChange, ...blockContent }) {
   }
 
   return (
-    <div className={`${blockContent.blockType}` + " block"}>
+    <div className={`${blockContent.blockType}` + " block text-3xl font-bold "}>
       {isEditing ?
         <input ref={inputRef} value={blockContent.content} onChange={onTextFieldChange} />
         :
