@@ -28,13 +28,8 @@ export function Block({handleBlockChange, ...blockContent }) {
     handleBlockChange({ ...blockContent, newContent: e.target.value });
   }
 
-  function onDeleteBlock() {
-    handleBlockChange({ ...blockContent, delete: true });
-  }
-
   return (
     <>
-      <button class="button" onClick={onDeleteBlock}>&#xe020;</button>
       <div className={`${blockContent.blockType}` + " block text-3xl font-bold "}>
         {isEditing ?
           <input ref={inputRef} value={blockContent.content} onChange={onTextFieldChange} />
