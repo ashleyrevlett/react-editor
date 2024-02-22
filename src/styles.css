@@ -61,22 +61,32 @@ ul {
     hover:bg-blue-100 hover:border-blue-200;
 }
 
+[contenteditable=true]:empty:not(:focus):before{
+  content:attr(dataplaceholder);
+  color:grey;
+  font-style:italic;
+}
+
+[contenteditable=true]:active, [contenteditable=true]:focus {
+  /* @apply outline-none border-none; */
+  @apply outline-dashed;
+}
+
 .bb-block {
-  @apply flex flex-row py-4 items-start;
+  @apply flex flex-row py-2 items-start;
 }
 
 .bb-block.hoverable:hover {
   @apply relative;
+}
 
-  &::after {
-    @apply bg-blue-400;
+.bb-block.hoverable:hover::after {
+  @apply bg-blue-400;
 
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: -2px;
-    width: 100%;
-    height: 2px;
-  }
-
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 2px;
 }

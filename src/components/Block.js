@@ -11,31 +11,30 @@ type TBlock = {
 
 // a doc tree item listing + its edit controls
 export function Block({handleBlockChange, ...blockContent }) {
-  /*
-  show edit form, update state from text edits
-  */
-  const [isEditing, setIsEditing] = useState(false);
-  const inputRef = useRef(null);
+  const editableContentRef = useRef(null);
 
-  function toggleEditing() {
-    setIsEditing(!isEditing);
-    if (inputRef.current && isEditing) {
-      inputRef.current.focus();
-    }
+  const handleTextFieldChange = (e) => {
+    handleBlockChange({ ...blockContent, newContent: e.currentTarget.textContent });
   }
 
-  const onTextFieldChange = (e) => {
-    handleBlockChange({ ...blockContent, newContent: e.target.value });
+  const handleKeyDown = (e) => {
+    // if content is blank, and backspace is pressed, delete this block
+    if (e.key === "Backspace" && editableContentRef.current.innerHTML === "") {
+      handleBlockChange({ ...blockContent, delete: true });
+    }
   }
 
   return (
     <>
-      <div className={`${blockContent.blockType}` + " block text-3xl font-bold "}>
-        {isEditing ?
-          <input ref={inputRef} value={blockContent.content} onChange={onTextFieldChange} />
-          :
-          <button onClick={toggleEditing}>{blockContent.content}</button>
-        }
+      <div className={`${blockContent.blockType} w-full hover:bg-blue-200"`}
+        contentEditable="true"
+        suppressContentEditableWarning
+        onBlur={handleTextFieldChange}
+        onKeyDown={handleKeyDown}
+        dataplaceholder="Type something..."
+        ref={editableContentRef}
+      >
+        {blockContent.content}
       </div>
     </>
   )
