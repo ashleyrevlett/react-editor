@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 
 type BlockType = "h1" | "h2" | "p" | "img";
 
@@ -11,12 +11,11 @@ type TBlock = {
 
 // a doc tree item listing + its edit controls
 export function Block({handleBlockChange, ...blockContent }) {
+  /*
+  show edit form, update state from text edits
+  */
   const [isEditing, setIsEditing] = useState(false);
   const inputRef = useRef(null);
-
-  const onTextFieldChange = (e) => {
-    handleBlockChange({ ...blockContent, newContent: e.target.value });
-  }
 
   function toggleEditing() {
     setIsEditing(!isEditing);
@@ -25,13 +24,24 @@ export function Block({handleBlockChange, ...blockContent }) {
     }
   }
 
+  const onTextFieldChange = (e) => {
+    handleBlockChange({ ...blockContent, newContent: e.target.value });
+  }
+
+  function onDeleteBlock() {
+    handleBlockChange({ ...blockContent, delete: true });
+  }
+
   return (
-    <div className={`${blockContent.blockType}` + " block text-3xl font-bold "}>
-      {isEditing ?
-        <input ref={inputRef} value={blockContent.content} onChange={onTextFieldChange} />
-        :
-        <button onClick={toggleEditing}>{blockContent.content}</button>
-      }
-    </div>
+    <>
+      <button class="button" onClick={onDeleteBlock}>&#xe020;</button>
+      <div className={`${blockContent.blockType}` + " block text-3xl font-bold "}>
+        {isEditing ?
+          <input ref={inputRef} value={blockContent.content} onChange={onTextFieldChange} />
+          :
+          <button onClick={toggleEditing}>{blockContent.content}</button>
+        }
+      </div>
+    </>
   )
 }
